@@ -17,12 +17,12 @@ export const containerVariants: Variants = {
 
 export const slideRight: Variants = {
 	enter: {
-		x: "100vw",
+		x: [100, 0],
 		// opacity: 1,
 		transition: { duration: 0.5 },
 	},
 	exit: {
-		x: "-100vw",
+		x: [0, 100],
 		// opacity: 0,
 		transition: { duration: 0.5 },
 	},

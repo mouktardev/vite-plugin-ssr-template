@@ -1,5 +1,5 @@
 import { cn } from "#/renderer/util";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "./Link";
 
@@ -69,13 +69,6 @@ export default function TableOfContent() {
 					</Link>
 				</li>
 			))}
-			<Link
-				className="inline-flex gap-1 py-1 pl-2 pr-3 font-bold items-center rounded-full border"
-				href="/posts"
-			>
-				<ChevronLeft className="w-4 h-4" />
-				Back to posts
-			</Link>
 		</ul>
 	);
 }

@@ -22,8 +22,11 @@ export async function onBeforeRender(pageContext: PageContextBuiltIn) {
 			pageProps: {
 				post: post,
 			},
-			// The page's <title>
-			documentProps: { title: post.title },
+			// The page's title
+			documentProps: {
+				title: post.title,
+				description: `This page ia about ${post.title}`,
+			},
 		},
 	};
 }

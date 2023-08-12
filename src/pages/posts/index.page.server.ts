@@ -3,17 +3,18 @@ import { parse } from "zod-matter";
 import { PostSchema, type Post } from "./types";
 
 export async function onBeforeRender() {
-	// await sleep(700); // Simulate slow network
+	await sleep(1000); // Simulate slow network
 	const posts = getPosts();
 	return {
 		pageContext: {
 			pageProps: {
-				// We remove data we don't need because we pass `pageContext.movies` to
-				// the client; we want to minimize what is sent over the network.
 				posts: posts,
 			},
-			// The page's <title>
-			documentProps: { title: getTitle(posts) },
+			// The page's title & description
+			documentProps: {
+				title: "All Posts",
+				description: `This page has ${posts.length} posts to browse`,
+			},
 		},
 	};
 }
@@ -52,7 +53,10 @@ export async function prerender() {
 				pageProps: {
 					posts: posts,
 				},
-				documentProps: { title: getTitle(posts) },
+				documentProps: {
+					title: "All Posts",
+					description: `This page has ${posts.length} posts to browse`,
+				},
 			},
 		},
 		...posts.map((post) => {
@@ -67,18 +71,21 @@ export async function prerender() {
 					pageProps: {
 						post: post,
 					},
-					documentProps: { title: post.title },
+					documentProps: {
+						title: post.title,
+						description: `This page ia about ${post.title}`,
+					},
 				},
 			};
 		}),
 	];
 }
 
-function getTitle(posts: Post[]): string {
-	const title = `${posts.length} Posts`;
-	return title;
-}
-
-// function sleep(milliseconds: number): Promise<void> {
-// 	return new Promise((r) => setTimeout(r, milliseconds));
+// function getTitle(posts: Post[]): string {
+// 	const title = `${posts.length} Posts`;
+// 	return title;
 // }
+
+function sleep(milliseconds: number): Promise<void> {
+	return new Promise((r) => setTimeout(r, milliseconds));
+}

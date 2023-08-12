@@ -1,3 +1,3 @@
 import { atom } from "nanostores";
 
-export const isTransition = atom<boolean>(false);
+export const transition = atom<boolean>(false);

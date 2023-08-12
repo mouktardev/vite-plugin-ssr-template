@@ -8,7 +8,7 @@ type Props = {
 	children: React.ReactNode;
 };
 
-export function PageShell({ pageContext, children }: Props) {
+export function App({ pageContext, children }: Props) {
 	const Layout = pageContext.exports.Layout;
 	return (
 		// <React.StrictMode>

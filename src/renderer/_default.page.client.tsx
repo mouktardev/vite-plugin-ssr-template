@@ -1,8 +1,8 @@
 import ReactDOM from "react-dom/client";
-import { PageShell } from "./PageShell";
-import { getPageTitle } from "./getPageTitle";
+import { App } from "./_app";
+import { getPageSeo } from "./getPageSeo";
 import "./global.css";
-import { isTransition } from "./store";
+import { transition } from "./store";
 import type { PageContextClient } from "./types";
 
 let root: ReactDOM.Root;
@@ -14,35 +14,45 @@ export async function render(pageContext: PageContextClient) {
 	const { Page, pageProps } = pageContext;
 
 	const page = (
-		<PageShell pageContext={pageContext}>
+		<App pageContext={pageContext}>
 			<Page {...pageProps} />
-		</PageShell>
+		</App>
 	);
+
 	const container = document.getElementById("root")!;
 	if (pageContext.isHydration) {
+		// SSR
 		root = ReactDOM.hydrateRoot(container, page);
 	} else {
 		if (!root) {
+			// SPA
 			root = ReactDOM.createRoot(container);
 		}
 		root.render(page);
 	}
-	document.title = getPageTitle(pageContext);
+
+	//update dynamically on page change
+	const { title, description } = getPageSeo(pageContext);
+	document.title = title;
+	const existingMetaTag = document.querySelector('meta[name="description"]');
+	if (existingMetaTag) {
+		existingMetaTag.setAttribute("content", description);
+	}
 }
 
 export function onHydrationEnd() {
-	console.log("Hydration finished; page is now interactive.");
+	// console.log("Hydration finished; page is now interactive.");
 }
 
-export function onPageTransitionStart(pageContext: PageContextClient) {
-	console.log("Page transition start");
+export function onPageTransitionStart() {
+	// console.log("Page transition start");
+	transition.set(true);
 	// console.log("Is backwards navigation?", pageContext.isBackwardNavigation);
-	isTransition.set(true);
-	// document.querySelector('body')!.classList.add('page-is-transitioning')
+	// document.querySelector("body")!.classList.add("page-is-transitioning");
 }
 
 export function onPageTransitionEnd() {
-	console.log("Page transition end");
-	isTransition.set(false);
-	// document.querySelector('body')!.classList.remove('page-is-transitioning')
+	// console.log("Page transition end");
+	transition.set(false);
+	// document.querySelector("body")!.classList.remove("page-is-transitioning");
 }

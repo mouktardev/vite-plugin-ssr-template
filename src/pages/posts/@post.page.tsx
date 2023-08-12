@@ -1,7 +1,9 @@
 import CodeCopy from "#/components/CodeCopy";
 import Image from "#/components/Image";
+import { Link } from "#/components/Link";
 import TableOfContent from "#/components/TableOfContent";
 import { cn, flatten } from "#/renderer/util";
+import { ChevronLeft } from "lucide-react";
 import React, { ReactNode } from "react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -26,7 +28,14 @@ const HeadingRenderer = (props: HeadingRendererProps) => {
 
 export function Page({ post }: { post: Post }) {
 	return (
-		<div className="container m-5 pt-10">
+		<div className="container m-5">
+			<Link
+				className="inline-flex gap-1 py-1 pl-2 pr-3 my-4 font-bold items-center rounded-full border"
+				href="/posts"
+			>
+				<ChevronLeft className="w-4 h-4" />
+				Back to posts
+			</Link>
 			<Image className="w-full h-52" src={post.image.src}></Image>
 			<h1 className="scroll-m-20 my-4 text-4xl font-extrabold tracking-tight lg:text-5xl">
 				{post.title}

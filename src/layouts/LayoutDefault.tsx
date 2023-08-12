@@ -1,9 +1,9 @@
 import Button from "#/components/Button";
 import { Link } from "#/components/Link";
-import { Fade, WidthLeft, slideRight } from "#/renderer/animation";
-import { isTransition } from "#/renderer/store";
+import { Fade, WidthLeft } from "#/renderer/animation";
+import { transition } from "#/renderer/store";
 import { useStore } from "@nanostores/react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Book, ChevronLeft, Home } from "lucide-react";
 import { ReactNode, useCallback, useState } from "react";
 
@@ -12,7 +12,7 @@ type Props = {
 };
 
 export function LayoutDefault({ children }: Props) {
-	const transition = useStore(isTransition);
+	const isTransition = useStore(transition);
 	const [showSidebar, setShowSidebar] = useState(true);
 	const toggleSidebar = useCallback(
 		() => setShowSidebar((value) => !value),
@@ -25,7 +25,7 @@ export function LayoutDefault({ children }: Props) {
 					variants={WidthLeft}
 					initial="visible"
 					animate={showSidebar ? "visible" : "hidden"}
-					className="sticky h-screen top-0 z-40 overflow-hidden p-2 border bg-purple-300"
+					className="sticky h-screen top-0 z-40 overflow-hidden p-2 border"
 				>
 					<nav className="flex flex-col gap-4">
 						<Button
@@ -70,11 +70,24 @@ export function LayoutDefault({ children }: Props) {
 						</Link>
 					</nav>
 				</motion.aside>
-				<motion.div
-					variants={slideRight}
-					animate={transition ? "exit" : "enter"}
-					className="absolute z-30 inset-0 bg-black"
-				></motion.div>
+				<AnimatePresence>
+					{isTransition && (
+						<motion.div
+							className="absolute z-40 w-full h-screen top-0 left-0 bg-white/20 bg-center bg-[length:100px_100px] bg-no-repeat bg-[url('./loading.svg')] origin-center "
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
+							transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+						></motion.div>
+						// <motion.div
+						// 	className="absolute z-40 w-full h-screen top-0 left-0 bg-black origin-center"
+						// 	initial={{ scaleX: 0 }}
+						// 	animate={{ scaleX: 1 }}
+						// 	exit={{ scaleX: 0 }}
+						// 	transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+						// ></motion.div>
+					)}
+				</AnimatePresence>
 				{children}
 			</div>
 		</main>

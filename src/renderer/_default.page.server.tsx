@@ -1,30 +1,31 @@
 import { renderToString } from "react-dom/server";
-import { escapeInject, dangerouslySkipEscape } from "vite-plugin-ssr/server";
-import { PageShell } from "./PageShell";
-import { getPageTitle } from "./getPageTitle";
+import { dangerouslySkipEscape, escapeInject } from "vite-plugin-ssr/server";
+import { App } from "./_app";
+import { getPageSeo } from "./getPageSeo";
 import type { PageContextServer } from "./types";
+import logoUrl from "./vite.svg";
 
-export { render };
-export { passToClient };
+export const passToClient = ["pageProps", "documentProps", "someAsyncProps"];
 
-const passToClient = ["pageProps", "documentProps", "someAsyncProps"];
-
-async function render(pageContext: PageContextServer) {
+export async function render(pageContext: PageContextServer) {
 	const { Page, pageProps } = pageContext;
 
 	const stream = dangerouslySkipEscape(
 		renderToString(
-			<PageShell pageContext={pageContext}>
+			<App pageContext={pageContext}>
 				<Page {...pageProps} />
-			</PageShell>
+			</App>
 		)
 	);
 
-	const title = getPageTitle(pageContext);
+	const { title, description } = getPageSeo(pageContext);
 
 	const documentHtml = escapeInject`<!DOCTYPE html>
     <html>
       <head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="${description}" />
+		<link rel="icon" href="${logoUrl}" />
         <title>${title}</title>
       </head>
       <body>

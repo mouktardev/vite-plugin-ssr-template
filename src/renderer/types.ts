@@ -15,11 +15,13 @@ export type PageContextCustom = {
 	exports: {
 		documentProps?: {
 			title: string;
+			description: string;
 		};
 		Layout: ({ children }: { children: ReactNode }) => JSX.Element;
 	};
 	documentProps?: {
 		title: string;
+		description: string;
 	};
 };
 
