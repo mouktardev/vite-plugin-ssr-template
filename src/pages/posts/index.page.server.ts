@@ -3,7 +3,7 @@ import { parse } from "zod-matter";
 import { PostSchema, type Post } from "./types";
 
 export async function onBeforeRender() {
-	await sleep(1000); // Simulate slow network
+	// await sleep(1000); // Simulate slow network
 	const posts = getPosts();
 	return {
 		pageContext: {
@@ -86,6 +86,6 @@ export async function prerender() {
 // 	return title;
 // }
 
-function sleep(milliseconds: number): Promise<void> {
-	return new Promise((r) => setTimeout(r, milliseconds));
-}
+// function sleep(milliseconds: number): Promise<void> {
+// 	return new Promise((r) => setTimeout(r, milliseconds));
+// }

@@ -22,9 +22,9 @@ export function Page() {
 	);
 }
 
-export async function onBeforeRender() {
-	await sleep(1000); // Simulate slow network
-}
-function sleep(milliseconds: number): Promise<void> {
-	return new Promise((r) => setTimeout(r, milliseconds));
-}
+// export async function onBeforeRender() {
+// 	await sleep(1000); // Simulate slow network
+// }
+// function sleep(milliseconds: number): Promise<void> {
+// 	return new Promise((r) => setTimeout(r, milliseconds));
+// }
